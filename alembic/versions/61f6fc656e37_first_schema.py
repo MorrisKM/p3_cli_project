@@ -1,8 +1,8 @@
 """first schema
 
-Revision ID: b161c56f6d21
+Revision ID: 61f6fc656e37
 Revises: 
-Create Date: 2025-08-25 13:19:26.284374
+Create Date: 2025-08-25 22:52:12.982582
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = 'b161c56f6d21'
+revision: str = '61f6fc656e37'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -24,14 +24,14 @@ def upgrade() -> None:
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(), nullable=True),
     sa.Column('speciality', sa.String(), nullable=True),
-    sa.Column('contact', sa.Integer(), nullable=True),
+    sa.Column('contact', sa.String(), nullable=True),
     sa.Column('created_at', sa.DateTime(), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('patients',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(), nullable=True),
-    sa.Column('contact', sa.Integer(), nullable=True),
+    sa.Column('contact', sa.String(), nullable=True),
     sa.Column('created_at', sa.DateTime(), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
@@ -48,12 +48,12 @@ def upgrade() -> None:
     )
     op.create_table('medical_records',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('patients_id', sa.Integer(), nullable=True),
+    sa.Column('patient_id', sa.Integer(), nullable=True),
     sa.Column('allergies', sa.String(), nullable=True),
     sa.Column('height', sa.Integer(), nullable=True),
     sa.Column('weight', sa.Integer(), nullable=True),
     sa.Column('updated_at', sa.DateTime(), nullable=True),
-    sa.ForeignKeyConstraint(['patients_id'], ['patients.id'], ),
+    sa.ForeignKeyConstraint(['patient_id'], ['patients.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     # ### end Alembic commands ###
