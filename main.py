@@ -31,13 +31,15 @@ def hospital():
       click.secho('To add a new patient...', fg= 'yellow')
       while True:
         name = click.prompt('enter name...', type=str)
-        contact = click.prompt('enter contact... in 2547... format', type=int)
+        contact = click.prompt('enter contact... in 2547... format', type=str)
         if name and len(contact) == 12:
           add_patient(name, contact)
+          print('patient added successfully')
           break
         else:
           print('please enter valid data')
           continue
+
 
     elif choice1 == 2:
       name = click.prompt('enter patients name for medical data...', type=str)
@@ -71,7 +73,7 @@ def hospital():
       while True:
         name = click.prompt('enter name...', type=str)
         speciality = click.prompt('enter speciality...', type=str)
-        contact = click.prompt('enter contact... in 2547... format', type=int)
+        contact = click.prompt('enter contact... in 2547... format', type=str)
         if name and len(contact) == 12 and speciality:
           add_doctor(name, speciality, contact)
           break

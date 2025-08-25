@@ -17,8 +17,8 @@ class Appointment(Base):
   notes = Column(String)
   created_at = Column(DateTime, default=func.now())
 
-  doctor = relationship('Doctor', backref= 'appointments')
-  patient = relationship('Patient', backref= 'appointments')
+  doctor = relationship('Doctor', back_populates= 'appointments')
+  patient = relationship('Patient', back_populates= 'appointments')
 
 
 class Doctor(Base):
@@ -27,8 +27,10 @@ class Doctor(Base):
   id = Column(Integer, primary_key=True)
   name = Column(String)
   speciality = Column(String)
-  contact = Column(Integer)
+  contact = Column(String)
   created_at = Column(DateTime, default=func.now())
+
+  appointments = relationship('Appointment', back_populates='doctor')
 
 
 class Patient(Base):
@@ -36,18 +38,21 @@ class Patient(Base):
 
   id = Column(Integer, primary_key=True)
   name = Column(String)
-  contact = Column(Integer)
+  contact = Column(String)
   created_at = Column(DateTime, default=func.now())
+
+  appointments = relationship('Appointment', back_populates='patient')
+  medical_record = relationship('Medical_Record', back_populates='patient', uselist=False)
 
 
 class Medical_Record(Base):
   __tablename__ = 'medical_records'
 
   id = Column(Integer, primary_key=True)
-  patients_id = Column(Integer, ForeignKey('patients.id'))
+  patient_id = Column(Integer, ForeignKey('patients.id'))
   allergies = Column(String)
   height = Column(Integer)
   weight = Column(Integer)
   updated_at = Column(DateTime, default= func.now())
 
-  patient = relationship('Patient', backref='medical_records')
+  patient = relationship('Patient', back_populates='medical_records')
