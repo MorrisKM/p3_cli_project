@@ -39,9 +39,9 @@ def view_all_names(cls):
   return [name_tuple[0] for name_tuple in names]
 
 #add medical records
-def add_medical_record(patient_id, allergies, height, weight):
+def add_medical_record(patient, allergies, height, weight):
   medical_record = Medical_Record(
-    patient_id = patient_id, 
+    patient = patient, 
     allergies = allergies, 
     height = height, 
     weight = weight
