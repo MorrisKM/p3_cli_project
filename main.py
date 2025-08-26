@@ -150,5 +150,4 @@ def hospital():
           click.secho('Invalid data or patient/doctor not found.', fg='red')
           continue
 
-if __name__ == '__main__':
-  hospital()
+hospital()

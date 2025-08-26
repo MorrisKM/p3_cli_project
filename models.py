@@ -42,7 +42,7 @@ class Patient(Base):
   created_at = Column(DateTime, default=func.now())
 
   appointments = relationship('Appointment', back_populates='patient')
-  medical_record = relationship('Medical_Record', back_populates='patient', uselist=False)
+  medical_records = relationship('Medical_Record', back_populates='patient', uselist=False)
 
 
 class Medical_Record(Base):
