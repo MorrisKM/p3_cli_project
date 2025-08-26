@@ -18,10 +18,10 @@ def hospital():
   if choice == 1:
     while True:
       click.secho('-------PATIENTS-------', fg = 'yellow')
-      click.secho("  1. Add patient \n  2. View patient's medical data  \n  3. patient's appointments  \n  4. View patients \n  5.add patients medical record", fg='red')
+      click.secho("  1. Add patient \n  2. View patient's medical data  \n  3. patient's appointments  \n  4. View patients \n  5. Add patients medical record  \n  6. Main menu", fg='red')
       choice1 = click.prompt('type here...', type=int)
 
-      if choice1 in [1, 2, 3, 4, 5]:
+      if choice1 in [1, 2, 3, 4, 5, 6]:
         break
       else:
         print('please enter a valid choice')
@@ -35,7 +35,7 @@ def hospital():
         if name and len(contact) == 12:
           add_patient(name, contact)
           print('patient added successfully')
-          break
+          return hospital()
         else:
           print('please enter valid data')
           continue
@@ -45,6 +45,7 @@ def hospital():
       name = click.prompt('enter patients name for medical data...', type=str)
       medical = get_data_dict(Medical_Record, name)
       pprint.pp(medical) if medical else click.secho('patient has no medical data', fg='red')
+      return hospital()
 
     elif choice1 == 3:
       name = click.prompt('enter patients name to see appointments...', type=str)
@@ -53,10 +54,12 @@ def hospital():
         pprint.pp([f'{a.appointment_date} - Doctor ID: {a.doctor_id}, Notes: {a.notes}' for a in appointments])
       else:
         click.secho('patient has no appointments.', fg = 'red')
+      return hospital()
 
     elif choice1 == 4:
       names = view_all_names(Patient)
       pprint.pp(names) if names else click.secho('no patient available', fg= 'red')
+      return hospital()
 
     elif choice1 == 5:
       while True:
@@ -70,18 +73,21 @@ def hospital():
         if patient and allergies and height and weight:
           add_medical_record(patient, allergies, height, weight)
           click.secho('Medical record added successfully', fg='green')
-          break
+          return hospital()
         else:
           click.secho('Invalid data passed or patient not recorded', fg='red')
+
+    elif choice1 == 6:
+      return hospital()
 
       
   elif choice == 2:
     while True:
       click.secho('-------DOCTORS-------', fg = 'yellow')
-      click.secho("  1. Add doctor \n  2. doctors's appointments  \n  3. View doctors", fg='red')
+      click.secho("  1. Add doctor \n  2. doctors's appointments  \n  3. View doctors \n  4. Main menu", fg='red')
       choice2 = click.prompt('type here...', type=int)
 
-      if choice2 in [1, 2, 3]:
+      if choice2 in [1, 2, 3, 4]:
         break
       else:
         click.secho('please enter a valid choice', fg = 'red')
@@ -96,7 +102,7 @@ def hospital():
         if name and len(contact) == 12 and speciality:
           add_doctor(name, speciality, contact)
           click.secho('Doctor added successfully', fg='green')
-          break
+          return hospital()
         else:
           click.secho('please enter valid data', fg = 'red')
           continue
@@ -108,18 +114,23 @@ def hospital():
         pprint.pp([f'{a.appointment_date} - Patient ID: {a.patient_id}, Notes: {a.notes}' for a in appointments])
       else:
         click.secho('Doctor has no appointments.', fg = 'red')
+      return hospital()
 
     elif choice2 == 3:
       names = view_all_names(Doctor)
       pprint.pp(names) if names else click.secho('no doctors available', fg = 'red')
+      return hospital()
+
+    elif choice2 == 4:
+      return hospital()
 
   elif choice == 3:
     while True:
       click.secho('-------APPOINTMENTS-------', fg = 'yellow')
-      click.secho("  1. Add appointment \n", fg='red')
+      click.secho("  1. Add appointment \n  4. Main menu", fg='red')
       choice3 = click.prompt('type 1 to continue...', type=int)
 
-      if choice3 == 1:
+      if choice3 in [1, 2]:
         break
       else:
         click.secho('please enter a valid choice', fg = 'red')
@@ -145,9 +156,12 @@ def hospital():
         if patient and doctor and notes:
           add_appointment(doctor, patient, appointment_date, notes)
           click.secho('Appointment added successfully.', fg='green')
-          break
+          return hospital()
         else:
           click.secho('Invalid data or patient/doctor not found.', fg='red')
           continue
+
+    elif choice3 == 2:
+      return hospital() 
 
 hospital()
