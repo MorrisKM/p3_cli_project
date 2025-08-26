@@ -12,7 +12,7 @@ def hospital():
   choice = click.prompt('type here...', type=int)
 
   if choice not in [1, 2, 3]:
-    print('invalid choice! please pick 1 or 2 to continue')
+    print('invalid choice! please pick 1, 2 or 3 to continue')
     return hospital()
   
   if choice == 1:
