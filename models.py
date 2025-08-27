@@ -56,3 +56,6 @@ class Medical_Record(Base):
   updated_at = Column(DateTime, default= func.now())
 
   patient = relationship('Patient', back_populates='medical_records')
+
+  def __str__(self):
+    return f' patients name: {self.patient.name} \n allergies: {self.allergies} \n height: {self.height} \n weight: {self.weight} \n last_updated: {self.updated_at}'

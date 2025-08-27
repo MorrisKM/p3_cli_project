@@ -7,18 +7,18 @@ from crud import add_appointment, add_doctor, add_medical_record, add_patient, g
 def hospital():
   click.secho('------Welcome to the hospital app-------',blink=True ,bg='white', fg='green', bold= True)
   click.secho('Select Option to Proceed', fg='blue')
-  click.secho('  1. Patients \n  2. Doctors \n  3. Appointment', fg='red')
+  click.secho('  1. Patients \n  2. Doctors \n  3. Appointment \n  4. Exit', fg='red')
 
   choice = click.prompt('type here...', type=int)
 
-  if choice not in [1, 2, 3]:
+  if choice not in [1, 2, 3, 4]:
     print('invalid choice! please pick 1, 2 or 3 to continue')
     return hospital()
   
   if choice == 1:
     while True:
       click.secho('-------PATIENTS-------', fg = 'yellow')
-      click.secho("  1. Add patient \n  2. View patient's medical data  \n  3. patient's appointments  \n  4. View patients \n  5. Add patients medical record  \n  6. Main menu", fg='red')
+      click.secho("  1. Add patient \n  2. View patient's medical data  \n  3. patient's appointments  \n  4. View all patients \n  5. Add patients medical record  \n  6. Main menu", fg='red')
       choice1 = click.prompt('type here...', type=int)
 
       if choice1 in [1, 2, 3, 4, 5, 6]:
@@ -43,8 +43,10 @@ def hospital():
 
     elif choice1 == 2:
       name = click.prompt('enter patients name for medical data...', type=str)
-      medical = get_data_dict(Medical_Record, name)
-      pprint.pp(medical) if medical else click.secho('patient has no medical data', fg='red')
+      patient_id = session.query(Patient.id).filter(Patient.name == name).first()
+      medical = session.query(Medical_Record).filter(Medical_Record.patient_id == patient_id[0]).first()
+      
+      print(medical) if medical else click.secho('patient has no medical data', fg='red')
       return hospital()
 
     elif choice1 == 3:
@@ -84,7 +86,7 @@ def hospital():
   elif choice == 2:
     while True:
       click.secho('-------DOCTORS-------', fg = 'yellow')
-      click.secho("  1. Add doctor \n  2. doctors's appointments  \n  3. View doctors \n  4. Main menu", fg='red')
+      click.secho("  1. Add doctor \n  2. doctors's appointments  \n  3. View all doctors \n  4. Main menu", fg='red')
       choice2 = click.prompt('type here...', type=int)
 
       if choice2 in [1, 2, 3, 4]:
@@ -127,7 +129,7 @@ def hospital():
   elif choice == 3:
     while True:
       click.secho('-------APPOINTMENTS-------', fg = 'yellow')
-      click.secho("  1. Add appointment \n  4. Main menu", fg='red')
+      click.secho("  1. Add appointment \n  2. Main menu", fg='red')
       choice3 = click.prompt('type 1 to continue...', type=int)
 
       if choice3 in [1, 2]:
@@ -139,16 +141,16 @@ def hospital():
     if choice3 == 1:
       click.secho('To add a new appointment...', fg= 'yellow')
       while True:
-        patient_name = click.prompt('enter patient...', type=Patient)
-        doctor_name = click.prompt('enter doctor assigned...', type=Doctor)
-        appointment_date_str = click.prompt('enter appointment data yyyy,mm,dd')
+        patient_name = click.prompt('enter patient name...', type=str)
+        doctor_name = click.prompt('enter name of doctor assigned...', type=str)
+        appointment_date_str = click.prompt('enter appointment data yyyy-mm-dd')
         notes = click.prompt('enter notes...', type=str)
 
         patient = session.query(Patient).filter(Patient.name == patient_name).first()
         doctor = session.query(Doctor).filter(Doctor.name == doctor_name).first()
 
         try:
-          appointment_date = datetime.strptime(appointment_date, '%Y-%m-%d')
+          appointment_date = datetime.strptime(appointment_date_str, '%Y-%m-%d')
         except ValueError:
           click.secho('Invalid date format. use YYYY-MM-DD', fg='red')
           continue
@@ -162,6 +164,10 @@ def hospital():
           continue
 
     elif choice3 == 2:
-      return hospital() 
+      return hospital()
+
+  elif choice == 4:
+    click.secho('successfully exited', fg='red')
+    return 
 
 hospital()
